@@ -10,4 +10,3 @@ def parse(file):
         if l == 0:
             print(f'Column names are {", ".join(row)}')
             line_count += 1
-        else:
