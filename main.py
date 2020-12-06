@@ -1,91 +1,44 @@
-import os
 import sys
-import curses
-from curses import panel
-from Insertion import *
 from parse import *
+from Insertion import *
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QComboBox, QPushButton
+from PyQt5.QtCore import Qt
 
-class Menu(object):
-    def __init__(self, items, stdscreen):
-        self.window = stdscreen.subwin(0, 0)
-        self.window.keypad(1)
-        self.panel = panel.new_panel(self.window)
-        self.panel.hide()
-        panel.update_panels()
+# Subclass QMainWindow to customise your application's main window
+class MainWindow(QMainWindow):
 
-        self.position = 0
-        self.items = items
-        self.items.append(("exit", "exit"))
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
 
-    def navigate(self, n):
-        self.position += n
-        if self.position < 0:
-            self.position = 0
-        elif self.position >= len(self.items):
-            self.position = len(self.items) - 1
+        self.setWindowTitle("Project 3")
+        self.setGeometry(50, 50, 500, 300)
 
-    def display(self):
-        self.panel.top()
-        self.panel.show()
-        self.window.clear()
+        # The `Qt` namespace has a lot of attributes to customise
+        # widgets. See: http://doc.qt.io/qt-5/qt.html
+        
+        # Set the central widget of the Window. Widget will expand
+        # to take up all the space in the window by default.
+        mainMenu = self.menuBar()
 
-        while True:
-            self.window.refresh()
-            curses.doupdate()
-            for index, item in enumerate(self.items):
-                if index == self.position:
-                    mode = curses.A_REVERSE
-                else:
-                    mode = curses.A_NORMAL
+        self.home()
 
-                msg = "%d. %s" % (index, item[0])
-                self.window.addstr(1 + index, 1, msg, mode)
+    def home(self):
+        self.comboBox = QComboBox(self)
+        self.comboBox.addItem('Latitude')
+        self.comboBox.addItem('Longitude')
+        self.comboBox.move(20, 20)
 
-            key = self.window.getch()
+        self.pb = QPushButton(self)
+        self.pb.setText('Run')
+        self.pb.move(20, 250)
+        self.pb.clicked.connect(self.run)
+    def run(self):
+        s = parse('/Users/lucas/worldcitiespop.csv')
+        print(s)
 
-            if key in [curses.KEY_ENTER, ord("\n")]:
-                if self.position == len(self.items) - 1:
-                    break
-                elif self.position == 0:
-                    self.name()
-                elif self.position == 1:
-                    self.latitude()
-                elif self.position == 2:
-                    self.longitude()
+app = QApplication(sys.argv)
 
-            elif key == curses.KEY_UP:
-                self.navigate(-1)
+window = MainWindow()
+window.show()
 
-            elif key == curses.KEY_DOWN:
-                self.navigate(1)
-
-        self.window.clear()
-        self.panel.hide()
-        panel.update_panels()
-        curses.doupdate()
-    def name(self):
-        self.window.refresh()
-    def latitude(self):
-        self.window.refresh()
-    def longitude(self):
-        self.window.refresh()
-
-
-class MyApp(object):
-    def __init__(self, stdscreen):
-        self.screen = stdscreen
-        curses.curs_set(0)
-
-        main_menu_items = [
-            ("name", "name"),
-            ("latitude", "latitude"),
-            ("longitude", "latitude"),
-        ]
-        main_menu = Menu(main_menu_items, self.screen)
-        main_menu.display()
-
-
-if __name__ == "__main__":
-    curses.wrapper(MyApp)
-    
-    
+app.exec_()
