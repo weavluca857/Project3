@@ -9,7 +9,7 @@ def insertion_sort_latitude(l):
             j = j - 1
         
         l[j+1] = key
-        print(i)
+        #print(i)
 
 
 def insertion_sort_longitude(l):
@@ -25,9 +25,9 @@ def insertion_sort_longitude(l):
 def shell_sort_latitude(l):
 
     size = len(l)
-    print(size)
+    #print(size)
     gap = int(size/2)
-    print(gap)
+    #print(gap)
     while gap > 0:
 
         for i in range(gap, size):
@@ -40,7 +40,7 @@ def shell_sort_latitude(l):
 
             l[j] = temp
         gap = int(gap / 2)
-        print(gap)
+        #print(gap)
 
 def shell_sort_longitude(l):
 
