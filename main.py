@@ -13,11 +13,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Project 3")
         self.setGeometry(50, 50, 500, 300)
-        # The `Qt` namespace has a lot of attributes to customise
-        # widgets. See: http://doc.qt.io/qt-5/qt.html
-        
-        # Set the central widget of the Window. Widget will expand
-        # to take up all the space in the window by default.
         
 
         self.comboBox = QComboBox(self)
@@ -32,9 +27,9 @@ class MainWindow(QMainWindow):
 
         
     def run(self):
-        s = parse('/Users/lucas/worldcitiespop.csv')
+        s = parse('/Users/lucas/worldcitiespop.csv', 15000)
 
-        y = s[0:len(s)]
+        y = parse('/Users/lucas/worldcitiespop.csv', 100000)
         if str(self.comboBox.currentText()) == 'Latitude':
             tic = time.perf_counter()
             insertion_sort_latitude(s)
@@ -45,7 +40,7 @@ class MainWindow(QMainWindow):
             shell_sort_latitude(y)
             toc = time.perf_counter()
             QMessageBox.question(self,'shell sort', f"Finished Shell sort in {toc - tic:0.4f} seconds", QMessageBox.Ok, QMessageBox.Ok)
-            QMessageBox.question(self,'Results', s[0].name + " " + s[0].lat + "\n" + s[1].name + " " + s[1].lat + "\n" + s[2].name + " " + s[2].lat + "\n", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox.question(self,'Results', "The 3 lowest lat cites: \n" + s[0].name + " " + s[0].lat + "\n" + s[1].name + " " + s[1].lat + "\n" + s[2].name + " " + s[2].lat + "\n", QMessageBox.Ok, QMessageBox.Ok)
 
         else:
             
@@ -59,7 +54,7 @@ class MainWindow(QMainWindow):
             toc = time.perf_counter()
         #(f"Finished Shell sort in {toc - tic:0.4f} seconds")
             QMessageBox.question(self,'shell sort', f"Finished Shell sort in {toc - tic:0.4f} seconds", QMessageBox.Ok, QMessageBox.Ok)
-            QMessageBox.question(self,'Results', s[0].name + " " + s[0].lon + "\n" + s[1].name + " " + s[1].lon + "\n" + s[2].name + " " + s[2].lon + "\n", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox.question(self,'Results', "The 3 lowest lon cites: \n" + s[0].name + " " + s[0].lon + "\n" + s[1].name + " " + s[1].lon + "\n" + s[2].name + " " + s[2].lon + "\n", QMessageBox.Ok, QMessageBox.Ok)
         #else:
         #    insertion_sort_longitude(s)
         #    shell_sort_longitude(s)
